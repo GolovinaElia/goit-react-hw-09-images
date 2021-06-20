@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import style from './Modal.module.css';
-import { createPortal } from 'react-dom';
 
-const modalRoot = document.querySelector('#modal-root');
-
-export default function Modal({ onClose }) {
+export default function Modal({ onClose, largeImageURL, user }) {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', this.handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   });
 
@@ -23,11 +20,12 @@ export default function Modal({ onClose }) {
       onClose();
     }
   };
-  return createPortal(
+  return (
     <div className={style.Overlay} onClick={handleBackdropClick}>
-      <div className={style.Modal}>{this.props.children}</div>
-    </div>,
-    modalRoot,
+      <div className={style.Modal}>
+        <img src={largeImageURL} alt={user} />
+      </div>
+    </div>
   );
 }
 // class Modal extends Component {
@@ -52,11 +50,10 @@ export default function Modal({ onClose }) {
 //   };
 
 //   render() {
-//     return createPortal(
+//     return (
 //       <div className={style.Overlay} onClick={this.handleBackdropClick}>
 //         <div className={style.Modal}>{this.props.children}</div>
-//       </div>,
-//       modalRoot,
+//       </div>
 //     );
 //   }
 // }
