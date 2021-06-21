@@ -57,14 +57,13 @@ export default function App() {
     fetchHits();
   }, [query, currentPage]);
 
-  const openModal = imgModal => {
-    setlargeImageURL(imgModal);
-    setShowModal(true);
+  const toggleModal = () => {
+    setShowModal(prevShowModal => !prevShowModal);
   };
 
-  const closeModal = () => {
-    setlargeImageURL('');
-    setShowModal(false);
+  const handleClickImg = imgModal => {
+    setlargeImageURL(imgModal);
+    toggleModal();
   };
 
   const updatePage = () => {
@@ -81,12 +80,14 @@ export default function App() {
 
       {isLoading && <Loader />}
 
-      <ImageGallery hits={hits} imgModal={openModal} />
+      <ImageGallery hits={hits} imgModal={handleClickImg} />
 
       {renderButton && <Button onClick={updatePage} />}
 
       {showModal && (
-        <Modal onClose={closeModal} largeImageURL={largeImageURL} alt={user} />
+        <Modal onClose={toggleModal}>
+          <img src={largeImageURL} alt={user} />
+        </Modal>
       )}
     </>
   );
